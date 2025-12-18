@@ -1,0 +1,6 @@
+sources:
+  - name: earthquake
+    database: earthquake_project
+    schema: raw
+    tables:
+      - name: earthquake
