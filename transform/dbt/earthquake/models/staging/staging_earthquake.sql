@@ -9,9 +9,19 @@
 select
   id as earthquake_id,
   cast(cursor_time as integer) as cursor_time_ms,
-  {{ dbt_date.from_unixtimestamp("cursor_time_ms", format="milliseconds") }} as updated
+  {{ dbt_date.from_unixtimestamp("cursor_time_ms", format="milliseconds") }} as updated,
+  geometry:"coordinates"[0]::float as longitude,
+  geometry:"coordinates"[1]::float as latitude,
+  geometry:"coordinates"[2]::float as depth_km,
+  properties:"mag"::float as magnitude,
+  cast(properties:"time" as integer) as time_ms,
+  {{ dbt_date.from_unixtimestamp("time_ms", format="milliseconds") }} as time_utc,
+  properties:"url" as url,
+  properties:"magType" as magType,
+  properties:"place" as place,
+  properties:"title" as title
 from {{ source('earthquake', 'earthquake') }}
 
 {% if is_incremental() %}
-where cursor_time > (select max(cursor_time) from {{ this }})
+where cursor_time_ms > (select max(cursor_time_ms) from {{ this }})
 {% endif %}
