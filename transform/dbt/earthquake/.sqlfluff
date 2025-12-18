@@ -1,0 +1,12 @@
+[sqlfluff]
+templater = dbt
+dialect = postgres
+exclude_rules = L016,L027
+
+[sqlfluff:templater:dbt]
+project_dir = .
+profiles_dir = transform/dbt/earthquake
+target = lint
+
+[sqlfluff:templater:jinja]
+apply_dbt_builtins = True
