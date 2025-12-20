@@ -1,16 +1,16 @@
-name: linter
+name: sqlfluff_linter
 on: # trigger
   pull_request:
-    branches: [main]
+    branches: main
 jobs:
   linter:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest #will create an Ubuntu VM to run the action on
 
     steps:
-      - name: Checkout code
+      - name: Checkout code #this pulls the repo into your runner
         uses: actions/checkout@v4
 
-        -name: Set up python
+      - name: Set up python
         uses: actions/setup-python@v5
         with:
           python-version: "3.10"
@@ -28,6 +28,6 @@ jobs:
       - name: Run SQLFluff lint
         working-directory: transform/dbt/earthquake
         env:
-          DBT_PROFILES_DIR: ~/.dbt
+          DBT_PROFILES_DIR: .
         run: |
           sqlfluff lint models
