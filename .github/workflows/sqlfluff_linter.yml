@@ -1,4 +1,4 @@
-name: sqlfluff_linter
+name: earthquake
 on: # trigger
   pull_request:
     branches: main
