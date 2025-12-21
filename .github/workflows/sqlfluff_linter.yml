@@ -5,7 +5,7 @@ on: # trigger
 jobs:
   SQLFluff_linter:
     runs-on: ubuntu-latest #will create an Ubuntu VM to run the action on
-    environment: sqlfluff_linter
+    environment: earthquake_project
 
     steps:
       - name: Checkout code #this pulls the repo into your runner
