@@ -35,7 +35,7 @@ earthquake:
       schema: earthquake_prod
       threads: 1
 
-    sqlfluff_linter: #dummy profile for github action linter
+    sqlfluff_linter: #dummy target profile for github action linter
       type: snowflake
       account: dummy
       user: dummy

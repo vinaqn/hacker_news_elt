@@ -3,8 +3,9 @@ on: # trigger
   pull_request:
     branches: main
 jobs:
-  linter:
+  SQLFluff_linter:
     runs-on: ubuntu-latest #will create an Ubuntu VM to run the action on
+    environment: sqlfluff_linter
 
     steps:
       - name: Checkout code #this pulls the repo into your runner
@@ -28,6 +29,16 @@ jobs:
       - name: Run SQLFluff lint
         working-directory: transform/dbt/earthquake
         env:
-          DBT_PROFILES_DIR: .
+          # Secrets (from GitHub Environment: earthquake_project)
+          SNOWFLAKE_ACCOUNT: ${{ secrets.SNOWFLAKE_ACCOUNT }}
+          SNOWFLAKE_USER: ${{ secrets.SNOWFLAKE_USER }}
+          SNOWFLAKE_PASSWORD: ${{ secrets.SNOWFLAKE_PASSWORD }}
+
+          # Variables (from GitHub Environment: earthquake_project)
+          SNOWFLAKE_ROLE: ${{ vars.SNOWFLAKE_ROLE }}
+          SNOWFLAKE_DATABASE: ${{ vars.SNOWFLAKE_DATABASE }}
+          SNOWFLAKE_WAREHOUSE: ${{ vars.SNOWFLAKE_WAREHOUSE }}
+          SNOWFLAKE_SCHEMA: ${{ vars.SNOWFLAKE_SCHEMA }}
+          DBT_TARGET: sqlfluff_linter
         run: |
           sqlfluff lint models
