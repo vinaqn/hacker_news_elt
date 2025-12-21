@@ -11,5 +11,5 @@ template_blocks_indent = False
 [sqlfluff:templater:dbt]
 project_dir = .
 profiles_dir = .
-target = dev
+target = sqlfluff_linter
 
