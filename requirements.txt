@@ -6,3 +6,5 @@ sqlfluff==3.5.0
 sqlfluff-templater-dbt==3.5.0
 pytest>=7.0.0
 dbt-snowflake==1.10.4
+dagster==1.12.7
+create-dagster-1.12.7 #using pip as a package manager
