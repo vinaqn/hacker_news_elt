@@ -4,3 +4,8 @@ sources:
     schema: raw
     tables:
       - name: earthquake
+  - name: all_countries_geocode
+    database: earthquake_project
+    schema: amazon_s3
+    tables:
+      - name: allcountries
