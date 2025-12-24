@@ -7,17 +7,17 @@
 }}
 
 select
-    earthquake_id,
-    occurred_at,
-    updated_at,
-    magnitude,
-    earthquake_place,
-    longitude,
-    latitude,
-    depth_km,
-    page_title,
-    web_url
-from {{ ref('staging_earthquake') }}
+    e.earthquake_id,
+    e.occurred_at,
+    e.updated_at,
+    e.magnitude,
+    e.earthquake_place,
+    e.longitude,
+    e.latitude,
+    e.depth_km,
+    e.page_title,
+    e.web_url
+from {{ ref('staging_earthquake') }} as e
 {% if is_incremental() %}
-where updated_at > (select max(updated_at) from {{ this }})
+where e.updated_at > (select max(t.updated_at) from {{ this }} as t)
 {% endif %}
