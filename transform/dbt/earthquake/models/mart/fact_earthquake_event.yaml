@@ -1,0 +1,22 @@
+models:
+  - name: fact_earthquake_event
+    columns:
+      - name: earthquake_id
+        description: natural key from earthquake raw table
+        tests:
+          - not_null
+          - unique
+      - name: occurred_at
+        description: date when the earthquake occurred
+        tests:
+          - not_null
+      - name: longitude
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: -180
+              max_value: 180
+      - name: latitude
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: -90
+              max_value: 90

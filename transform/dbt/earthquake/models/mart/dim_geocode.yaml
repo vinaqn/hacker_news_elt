@@ -1,0 +1,18 @@
+models:
+  - name: dim_geocode
+    columns:
+      - name: geonameid
+        description: natural key from earthquake raw table
+        tests:
+          - not_null
+          - unique
+      - name: longitude
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: -180
+              max_value: 180
+      - name: latitude
+        tests:
+          - dbt_utils.accepted_range:
+              min_value: -90
+              max_value: 90

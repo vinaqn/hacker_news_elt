@@ -1,0 +1,8 @@
+models:
+  - name: dim_country
+    columns:
+      - name: country_code_alpha_2
+        description: natural key from country_region_code dataset, ISO 3166-1 alpha-2
+        tests:
+          - not_null
+          - unique
