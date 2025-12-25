@@ -38,7 +38,7 @@ airbyte_assets = build_airbyte_assets_definitions(workspace=airbyte_workspace,
                                                     dagster_airbyte_translator=CustomDagsterAirbyteTranslator()
                                                     )
 
-
+# defining amazon s3 job
 amazon_s3_job = dg.define_asset_job(
     name="amazon_s3_job",
     selection=dg.AssetSelection.keys(
@@ -47,6 +47,7 @@ amazon_s3_job = dg.define_asset_job(
     )
 )                
 
+# defining earthquake api job
 earthquake_api_job = dg.define_asset_job(
     name="earthquake_api",
     selection=dg.AssetSelection.keys(
