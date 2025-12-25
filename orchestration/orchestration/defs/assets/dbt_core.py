@@ -5,8 +5,8 @@ from dagster_dbt import DbtCliResource, dbt_assets, DagsterDbtTranslator
 from dagster import AssetExecutionContext
 import dagster as dg
 
-# configure dbt project resource
-repo_root = Path(__file__).resolve().parents[5]
+# configure dbt project resource; construct relative path
+repo_root = Path(__file__).resolve().parents[4]
 dbt_project_dir = repo_root / "transform" / "dbt" / "earthquake"
 
 dbt_warehouse_resource = DbtCliResource(project_dir=os.fspath(dbt_project_dir))
