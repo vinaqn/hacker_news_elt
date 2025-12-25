@@ -1,3 +1,4 @@
+python==3.11.14 
 dbt-core==1.10.0
 dbt-duckdb==1.10.0
 dbt-postgres==1.9.1
@@ -8,3 +9,6 @@ pytest>=7.0.0
 dbt-snowflake==1.10.4
 dagster==1.12.7
 create-dagster-1.12.7 #using pip as a package manager
+python==3.11.14 
+dagster-airbyte==0.28.7
+dagster-webserver==1.12.7
