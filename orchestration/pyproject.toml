@@ -5,7 +5,9 @@ version = "0.1.0"
 dependencies = [
     "dagster==1.12.7",
     "dagster-cloud",
-    "dagster-airbyte"
+    "dagster-airbyte",
+    "dbt-core",
+    "dbt-snowflake"
 ]
 
 [dependency-groups]

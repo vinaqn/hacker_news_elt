@@ -21,7 +21,7 @@ select
     e.properties:"magType" as magtype,
     e.properties:"place" as earthquake_place,
     e.properties:"title" as page_title
-from {{ source('earthquake', 'earthquake') }} as e
+from {{ source('earthquake_api', 'Earthquake') }} as e
 
 {% if is_incremental() %}
 where e.cursor_time::integer > (select max(t.cursor_time_ms) from {{ this }} as t)
