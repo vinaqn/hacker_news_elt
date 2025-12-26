@@ -10,4 +10,4 @@ select
     countries.REGION as country_region,
     countries."SUB-REGION" as sub_region,
     countries."INTERMEDIATE-REGION" as intermediate_region
-from {{ source('all_countries_geocode', 'countries_regional_codes') }} as countries
+from {{ source('amazon_s3', 'countries_regional_codes') }} as countries

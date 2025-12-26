@@ -1,12 +1,12 @@
 sources:
-  - name: earthquake
+  - name: earthquake_api
     database: earthquake_project
     schema: raw
     tables:
-      - name: earthquake
-  - name: all_countries_geocode
+      - name: Earthquake
+  - name: amazon_s3
     database: earthquake_project
     schema: amazon_s3
     tables:
-      - name: allcountries
+      - name: allCountries
       - name: countries_regional_codes

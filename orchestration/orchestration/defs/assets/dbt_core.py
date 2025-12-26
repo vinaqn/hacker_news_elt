@@ -13,7 +13,7 @@ dbt_warehouse_resource = DbtCliResource(project_dir=os.fspath(dbt_project_dir))
 
 
 
-# generate manifest
+# generate manifest if doesn't exist 
 dbt_manifest_path = (
     dbt_warehouse_resource.cli(
         ["--quiet", "parse"],
@@ -25,7 +25,7 @@ dbt_manifest_path = (
 
 class CustomDagsterDbtTranslator(DagsterDbtTranslator):
     def get_automation_condition(self, dbt_resource_props): 
-        return dg.AutomationCondition.eager()
+        return dg.AutomationCondition.eager() 
 
 # load manifest to produce asset defintion
 @dbt_assets(manifest=dbt_manifest_path, 

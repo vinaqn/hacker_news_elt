@@ -6,19 +6,30 @@ class CustomDagsterAirbyteTranslator(DagsterAirbyteTranslator):
     def get_asset_spec(self, props):
         default_spec = super().get_asset_spec(props)
 
-        # props is an object (AirbyteConnectionTableProps), not a dict
         stream_name = (
             getattr(props, "name", None)
             or getattr(getattr(props, "stream", None), "name", None)
             or getattr(getattr(props, "airbyte_stream", None), "name", None)
+            or default_spec.key.path[-1]
         )
-        if not stream_name:
-            stream_name = default_spec.key.path[-1]
+
+
+        # Decide the dbt source name based on connection (preferred) or stream naming convention 
+        connection_name = getattr(getattr(props, "connection", None), "name", None)
+
+        # mapping the connection name in Airbyte to the source name in dbt
+        stream_lower = stream_name.lower()
+
+        if ("countries" in stream_lower):
+            source_name = "amazon_s3"
+        elif ("earthquake" in stream_lower):
+            source_name = "earthquake_api"
+        else:
+            source_name = "airbyte"
 
         return default_spec.replace_attributes(
-            key=dg.AssetKey(["airbyte", "earthquake", stream_name]),
-            group_name="airbyte_earthquake",
-            automation_condition=dg.AutomationCondition.on_cron(cron_schedule="* * * * *"),
+            key=dg.AssetKey([source_name, stream_name]),
+            group_name=f"airbyte_{source_name}",
         )
 
 
@@ -28,7 +39,7 @@ airbyte_workspace = AirbyteWorkspace(
     rest_api_base_url="http://localhost:8000/api/public/v1",
     configuration_api_base_url="http://localhost:8000/api/v1",
     workspace_id=dg.EnvVar("AIRBYTE_WORKSPACE_ID"),
-    # If using basic auth, include username and password:
+    
     client_id=dg.EnvVar("AIRBYTE_CLIENT_ID"),
     client_secret=dg.EnvVar("AIRBYTE_CLIENT_SECRET"),
 )
@@ -42,8 +53,8 @@ airbyte_assets = build_airbyte_assets_definitions(workspace=airbyte_workspace,
 amazon_s3_job = dg.define_asset_job(
     name="amazon_s3_job",
     selection=dg.AssetSelection.keys(
-        dg.AssetKey(["airbyte", "earthquake", "allCountries"]),
-        dg.AssetKey(["airbyte", "earthquake", "countries_regional_codes"])
+        dg.AssetKey(["amazon_s3", "allCountries"]),
+        dg.AssetKey(["amazon_s3", "countries_regional_codes"])
     )
 )                
 
@@ -51,7 +62,7 @@ amazon_s3_job = dg.define_asset_job(
 earthquake_api_job = dg.define_asset_job(
     name="earthquake_api",
     selection=dg.AssetSelection.keys(
-        dg.AssetKey(["airbyte", "earthquake", "Earthquake"])
+        dg.AssetKey([ "earthquake_api", "Earthquake"])
     )
 )          
 

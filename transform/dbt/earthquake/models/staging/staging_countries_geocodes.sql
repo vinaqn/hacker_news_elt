@@ -11,4 +11,4 @@ select
     countries.country_code,
     countries.timezone,
     split_part(countries.timezone, '/', 1) as continent
-from {{ source('all_countries_geocode', 'allcountries') }} as countries
+from {{ source('amazon_s3', 'allCountries') }} as countries
