@@ -53,6 +53,8 @@ Snowflake is used as the central cloud data warehouse for this project, storing 
 ### Tableau
 Tableau serves as the final BI and consumption layer of the pipeline, connecting directly to Snowflake mart tables produced by dbt transformations. It demonstrates how curated, analytics-ready data is exposed to end users for exploration, reporting, and visualization, completing the end-to-end ELT workflow.
 
+![Tableau Dashboard](images/tableau_dashboard.png)
+
 The dashboard is published to Tableau Public and can be viewed here: https://public.tableau.com/views/earthquake_project_tableau/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
 
 ## ERD
