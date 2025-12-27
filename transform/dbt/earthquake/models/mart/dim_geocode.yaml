@@ -1,7 +1,7 @@
 models:
   - name: dim_geocode
     columns:
-      - name: geonameid
+      - name: geoname_id
         description: natural key from earthquake raw table
         tests:
           - not_null

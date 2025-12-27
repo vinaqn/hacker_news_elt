@@ -4,7 +4,7 @@
   )
 }}
 select
-    countries.geonameid,
+    countries.geonameid as geoname_id,
     countries.name,
     countries.longitude::decimal(9, 6) as longitude,
     countries.latitude::decimal(9, 6) as latitude,

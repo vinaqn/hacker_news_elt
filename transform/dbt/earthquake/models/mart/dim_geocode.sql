@@ -6,7 +6,7 @@
 }}
 
 select
-    geocode.geonameid,
+    geocode.geoname_id,
     geocode.name,
     geocode.longitude,
     geocode.latitude,
