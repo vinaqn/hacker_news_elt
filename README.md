@@ -50,6 +50,11 @@ Snowflake is used as the central cloud data warehouse for this project, storing 
 
 ![Snowflake_warehouse](images/snowflake_database_catalog.png)
 
+### Tableau
+Tableau serves as the final BI and consumption layer of the pipeline, connecting directly to Snowflake mart tables produced by dbt transformations. It demonstrates how curated, analytics-ready data is exposed to end users for exploration, reporting, and visualization, completing the end-to-end ELT workflow.
+
+The dashboard is published to Tableau Public and can be viewed here: https://public.tableau.com/views/earthquake_project_tableau/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+
 ## ERD
 The data model is designed using dimensional modeling principles, with a central fact table (fact_earthquake_event) capturing individual earthquake events and multiple supporting dimensions. The fact table records measurable attributes such as magnitude, depth, location coordinates, and timestamps, and links to dimensions for time and location analysis.
 
