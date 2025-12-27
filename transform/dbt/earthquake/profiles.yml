@@ -1,5 +1,5 @@
 earthquake:
-  target: dev
+  target: prod
   outputs:
     lint:
       type: duckdb
