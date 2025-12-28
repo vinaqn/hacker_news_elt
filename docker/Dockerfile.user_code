@@ -13,4 +13,11 @@ ENV DBT_PROFILES_DIR=/app/transform/dbt/earthquake
 ENV PYTHONPATH=/app
 
 EXPOSE 4000
+
+# copy entrypoint
+COPY docker/entrypoints/user_code_entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+
 CMD ["dagster", "code-server", "start","-h", "0.0.0.0","-p", "4000","-d", "/app/orchestration","-f", "/app/orchestration/orchestration/definitions.py"]

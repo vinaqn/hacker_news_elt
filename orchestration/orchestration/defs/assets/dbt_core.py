@@ -51,7 +51,7 @@ if not dbt_manifest_path.exists():
 )
 def dbt_warehouse(context: AssetExecutionContext, dbt_warehouse_resource: DbtCliResource):
      # Ensure deps are installed
-    yield from dbt_warehouse_resource.cli(["deps"], context=context).stream()
+    yield from dbt_warehouse_resource.cli(["deps"]).stream()
 
     # Then run dbt
     yield from dbt_warehouse_resource.cli(["build"], context=context).stream()
