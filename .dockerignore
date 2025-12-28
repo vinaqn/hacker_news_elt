@@ -1,0 +1,22 @@
+# Git
+.git
+.github
+
+# Python junk
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# Virtual envs
+.venv
+env
+venv
+
+# Local artifacts
+logs/
+images/
+
+# Secrets
+.env
