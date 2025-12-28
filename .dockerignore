@@ -20,3 +20,8 @@ images/
 
 # Secrets
 .env
+
+#dbt
+transform/dbt/**/target/
+transform/dbt/**/dbt_packages/
+transform/dbt/**/logs/

@@ -6,6 +6,10 @@ RUN pip install -U pip && pip install -r /app/requirements.txt
 
 COPY orchestration /app/orchestration
 COPY transform /app/transform
+
+COPY transform/dbt/earthquake/profiles.yml /app/transform/dbt/profiles.yml
+
+ENV DBT_PROFILES_DIR=/app/transform/dbt/earthquake
 ENV PYTHONPATH=/app
 
 EXPOSE 4000
