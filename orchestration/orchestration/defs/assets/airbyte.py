@@ -1,4 +1,6 @@
-from dagster_airbyte import AirbyteWorkspace, build_airbyte_assets_definitions, DagsterAirbyteTranslator
+from dagster_airbyte import (AirbyteCloudWorkspace,
+                            build_airbyte_assets_definitions, 
+                            DagsterAirbyteTranslator)
 
 import dagster as dg
 
@@ -34,12 +36,14 @@ class CustomDagsterAirbyteTranslator(DagsterAirbyteTranslator):
 
 
 
-# Connect to OSS Airbyte instance
-airbyte_workspace = AirbyteWorkspace(
-    rest_api_base_url="http://localhost:8000/api/public/v1",
-    configuration_api_base_url="http://localhost:8000/api/v1",
-    workspace_id=dg.EnvVar("AIRBYTE_WORKSPACE_ID"),
+# Connect to Airbyte Cloud workspace
+airbyte_workspace = AirbyteCloudWorkspace(
     
+    #local
+    #rest_api_base_url="http://localhost:8000/api/public/v1",
+    #configuration_api_base_url="http://localhost:8000/api/v1",
+    
+    workspace_id=dg.EnvVar("AIRBYTE_WORKSPACE_ID"),
     client_id=dg.EnvVar("AIRBYTE_CLIENT_ID"),
     client_secret=dg.EnvVar("AIRBYTE_CLIENT_SECRET"),
 )
