@@ -1,0 +1,12 @@
+FROM python:3.11-slim
+WORKDIR /app
+
+COPY requirements.txt /app/requirements.txt
+RUN pip install -U pip && pip install -r /app/requirements.txt
+
+COPY orchestration /app/orchestration
+COPY transform /app/transform
+ENV PYTHONPATH=/app
+
+EXPOSE 4000
+CMD ["dagster", "code-server", "start","-h", "0.0.0.0","-p", "4000","-d", "/app/orchestration","-f", "/app/orchestration/orchestration/definitions.py"]

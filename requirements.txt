@@ -5,11 +5,10 @@ dbt-snowflake>=1.10,<1.11
 
 #dagster
 dagster==1.12.7
-create-dagster==1.12.7 #using pip as a package manager
 dagster-airbyte==0.28.7
 dagster-webserver==1.12.7
-dagster_dbt==0.28.7
-
+dagster-dbt==0.28.7
+dagster-postgres==0.28.7  #for Dagster to save run/logs to RDS
 
 #linters
 ruff
