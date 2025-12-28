@@ -1,7 +1,22 @@
 # to build docker image for dagster scheduling
 
 FROM python:3.11-slim
+
 WORKDIR /app
+
+# Install deps first 
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Dagster instance config
+ENV DAGSTER_HOME=/opt/dagster/dagster_home
+RUN mkdir -p /opt/dagster/dagster_home
+
+# Copy dagster.yaml into DAGSTER_HOME
+# (Make sure this file exists in your repo at orchestration/dagster.yaml)
+COPY orchestration/dagster.yaml /opt/dagster/dagster_home/dagster.yaml
+
+# Copy the rest of the repo
 COPY . /app
-RUN pip install --no-cache-dir -r requirements.txt
+
 CMD ["dagster-daemon", "run"]

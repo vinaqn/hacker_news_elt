@@ -1,7 +1,23 @@
 # to build docker image of the dagster UI
 FROM python:3.11-slim
+
 WORKDIR /app
+
+# Install deps first (better caching)
+COPY requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Dagster instance config
+ENV DAGSTER_HOME=/opt/dagster/dagster_home
+RUN mkdir -p /opt/dagster/dagster_home
+
+# Copy dagster.yaml into DAGSTER_HOME
+# (Make sure this exists in your repo at orchestration/dagster.yaml)
+COPY orchestration/dagster.yaml /opt/dagster/dagster_home/dagster.yaml
+
+# Copy the rest of the repo (includes workspace.yaml)
 COPY . /app
-RUN pip install --no-cache-dir -r requirements.txt
+
 EXPOSE 3000
-CMD ["dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "-w", "workspace.yaml"]
+CMD ["dagster-webserver", "-h", "0.0.0.0", "-p", "3000", "-w", "/app/workspace.yaml"]
+
