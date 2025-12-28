@@ -24,7 +24,7 @@ The GeoNames dataset only had country codes. The `all.csv` was sourced from this
 
 ## Data Architecture
 
-## ELT
+## Tech Stack
 
 ### Airbyte Cloud
 
@@ -51,6 +51,20 @@ Dagster is used as the orchestration layer for this project, leveraging an asset
 Snowflake is used as the central cloud data warehouse for this project, storing raw data ingested by Airbyte and supporting in-warehouse transformations with dbt to produce curated staging and mart schemas. These analytics-ready mart tables are then consumed directly by Tableau, which connects to Snowflake for semantic modeling and visualization. This design follows an ELT pattern and enables scalable transformations, governed data access, and efficient downstream analytics.
 
 ![Snowflake_warehouse](images/snowflake_database_catalog.png)
+
+
+### AWS Infrastructure 
+This project is deployed on AWS using ECS with Fargate to run Dagster in a fully containerized, serverless environment. Dagster is split into three ECS services—webserver, daemon, and user-code (gRPC)—to isolate UI, scheduling, and execution concerns. Docker images are built locally and stored in Amazon ECR, while Amazon RDS (PostgreSQL) is used for Dagster run storage, event logs, and schedule state. The Dagster UI is exposed via an Application Load Balancer, and all services run inside a private VPC with tightly scoped security groups. dbt is containerized within the Dagster user-code service and executed via the dbt CLI, allowing transformations to run alongside orchestration logic. To support dbt model-level lineage, the user-code container generates a fresh dbt manifest at startup (dbt deps + dbt parse) rather than baking build artifacts into the image, ensuring clean, reproducible deployments. This setup provides a scalable, production-ready orchestration layer without managing EC2 infrastructure.
+
+#### Core AWS Services Used
+
+- **Amazon ECS (Fargate)** – container orchestration without managing EC2
+- **Amazon ECR** – Docker image registry
+- **Amazon RDS (PostgreSQL)** – Dagster metadata storage
+- **Application Load Balancer (ALB)** – exposes the Dagster UI
+- **IAM** – task execution roles and permissions
+- **VPC + Security Groups** – network isolation and access control
+
 
 ### Tableau
 
