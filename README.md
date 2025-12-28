@@ -29,6 +29,8 @@ The GeoNames dataset only had country codes. The `all.csv` was sourced from this
 ### Airbyte
 
 Airbyte Open Source is used as the primary ingestion tool for this project. A custom Airbyte connector was built to extract earthquake data from the USGS Earthquake API. The connector configuration is defined in a declarative `earthquake_custom_connector.yml` file located in the `airbyte/` directory. Configuration details and setup instructions are documented in the README within the `airbyte` folder.
+### Airbyte Cloud
+Airbyte Cloud is used as the primary ingestion tool for this project. A custom Airbyte connector was built to extract earthquake data from the USGS Earthquake API. The connector configuration is defined in a declarative `earthquake_custom_connector.yml` file located in the `airbyte/` directory. Configuration details and setup instructions are documented in the README within the `airbyte` folder.
 
 In addition, Airbyte’s standard Amazon S3 connector is used to ingest reference data from a private S3 bucket hosting the GeoNames `allCountries.txt` and a csv of ISO-3166 country codes. This enables consistent and repeatable ingestion of external geospatial reference data into the pipeline.
 
