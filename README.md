@@ -25,7 +25,7 @@ The GeoNames dataset only had country codes. The `all.csv` was sourced from this
 ## Data Architecture
 At a high-level, this diagram showcases the end-to-end data architecture for this project, from source ingestion through transformation and analytics. 
 
-![Data Architecture](images/data_architecture.png)
+![Data Architecture]
 
 ## Tech Stack
 
