@@ -76,6 +76,10 @@ This project is deployed on AWS using ECS with Fargate to run Dagster in a fully
 - **IAM** – task execution roles and permissions
 - **VPC + Security Groups** – network isolation and access control
 
+Note: The AWS services and configurations in this project were set up using an Amazon free trial account. As a result, certain resource sizes, availability options, or production-grade features may be constrained or differ from a full AWS account setup.
+
+Deploying Dagster to Amazon AWS documentation: https://docs.dagster.io/deployment/oss/deployment-options/aws
+
 ### Snowflake
 
 Snowflake is used as the central cloud data warehouse for this project, storing raw data ingested by Airbyte and supporting in-warehouse transformations with dbt to produce curated staging and mart schemas. These analytics-ready mart tables are then consumed directly by Tableau, which connects to Snowflake for semantic modeling and visualization. This design follows an ELT pattern and enables scalable transformations, governed data access, and efficient downstream analytics.
