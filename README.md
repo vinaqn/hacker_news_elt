@@ -1,4 +1,4 @@
-# US Geological Survey Earthquake ELT
+# US Geological Survey - Earthquake ELT
 
 This project implements a cloud-deployed ETL pipeline that ingests earthquake data from the USGS Earthquake API. The pipeline extracts and incrementally loads seismic event data, applies data quality checks, and transforms it using dimensional modeling to support analytical use cases. Processed data is served to an analytics layer for downstream dashboards and exploration of earthquake frequency, magnitude, and geographic trends. The architecture is designed to scale horizontally (e.g., via cloud data warehouse compute scaling), is fully automated with CI/CD, and is scheduled to run in the cloud, demonstrating production-ready data engineering best practices.
 
