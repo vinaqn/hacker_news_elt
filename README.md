@@ -9,6 +9,7 @@ This project implements a cloud-deployed ETL pipeline that ingests earthquake da
 - [Transformations](#transformations)
 - [Orchestration and Infrastructure](#orchestration-and-infrastructure)
 - [Analytics](#analytics)
+- [CI/CD](#cicd)
   
 ## Data Architecture
 At a high-level, this diagram showcases the end-to-end data architecture for this project, from source ingestion through transformation and analytics. 
@@ -99,4 +100,11 @@ Tableau serves as the final BI and consumption layer of the pipeline, connecting
 ![Tableau Dashboard](images/tableau_dashboard.png)
 
 The dashboard is published to Tableau Public and can be viewed here: https://public.tableau.com/views/earthquake_project_tableau/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
+
+## CI/CD
+This project implements Continuous Integration (CI) using GitHub Actions to automatically validate code quality on every pull request to the main branch. The CI workflow runs SQLFluff to lint dbt SQL models, helping enforce consistent SQL style, catch errors early, and maintain high data-quality standards before changes are merged.
+
+Continuous Deployment (CD) has not yet been implemented. The planned approach is to extend GitHub Actions workflows to build updated Docker images and push them to Amazon ECR, enabling automated deployments of Dagster services and user code as part of a fully productionized pipeline.
+
+
 
