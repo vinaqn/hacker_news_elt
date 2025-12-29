@@ -2,7 +2,20 @@
 
 This project implements a cloud-deployed ETL pipeline that ingests earthquake data from the USGS Earthquake API. The pipeline extracts and incrementally loads seismic event data, applies data quality checks, and transforms it using dimensional modeling to support analytical use cases. Processed data is served to an analytics layer for downstream dashboards and exploration of earthquake frequency, magnitude, and geographic trends. The architecture is designed to scale horizontally (e.g., via cloud data warehouse compute scaling), is fully automated with CI/CD, and is scheduled to run in the cloud, demonstrating production-ready data engineering best practices.
 
-## Data Source
+## Table of Contents
+- [Data Architecture](#data-architecture)
+- [Data Sources](#data-sources)
+- [Ingestion](#ingestion)
+- [Transformations](#transformations)
+- [Orchestration and Infrastructure](#orchestration-and-infrastructure)
+- [Analytics](#analytics)
+  
+## Data Architecture
+At a high-level, this diagram showcases the end-to-end data architecture for this project, from source ingestion through transformation and analytics. 
+
+![data_architecture](images/data_architecture.png)
+
+## Data Sources
 
 ### USGS Earthquake API
 
@@ -22,12 +35,9 @@ The GeoNames dataset only had country codes. The `all.csv` was sourced from this
 
 **Data Download:** https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/all/all.csv
 
-## Data Architecture
-At a high-level, this diagram showcases the end-to-end data architecture for this project, from source ingestion through transformation and analytics. 
 
 
-
-## Tech Stack
+## Ingestion
 
 ### Airbyte Cloud
 
@@ -39,22 +49,19 @@ All of the data were loaded into a raw schema in Snowflake.
 
 ![Airbyte_connections](images/airbyte_connections.png)
 
+## Transformations
+
 ### dbt
 
 dbt is used to transform data within Snowflake, staging raw ingested data in a **staging** schema and modeling it into **dimensional (fact and dimension) tables** within a **mart** schema. Data quality tests, including not-null, uniqueness, and relationship checks, are applied to ensure reliability and analytical correctness.
+
+## Orchestration and Infrastructure
 
 ### dagster
 
 Dagster is used as the orchestration layer for this project, leveraging an asset-based approach to model data dependencies across the pipeline. It schedules and monitors Airbyte sync jobs and triggers downstream dbt transformations using eager execution, ensuring models run automatically as soon as upstream data is updated. This setup provides end-to-end data lineage, dependency management, and observability across the ingestion and transformation layers.
 
 ![Data Lineage in Dagster](images/dagster_data_lineage_2.png)
-
-### Snowflake
-
-Snowflake is used as the central cloud data warehouse for this project, storing raw data ingested by Airbyte and supporting in-warehouse transformations with dbt to produce curated staging and mart schemas. These analytics-ready mart tables are then consumed directly by Tableau, which connects to Snowflake for semantic modeling and visualization. This design follows an ELT pattern and enables scalable transformations, governed data access, and efficient downstream analytics.
-
-![Snowflake_warehouse](images/snowflake_database_catalog.png)
-
 
 ### AWS Infrastructure 
 This project is deployed on AWS using ECS with Fargate to run Dagster in a fully containerized, serverless environment. Dagster is split into three ECS services—webserver, daemon, and user-code (gRPC)—to isolate UI, scheduling, and execution concerns. Docker images are built locally and stored in Amazon ECR, while Amazon RDS (PostgreSQL) is used for Dagster run storage, event logs, and schedule state. The Dagster UI is exposed via an Application Load Balancer, and all services run inside a private VPC with tightly scoped security groups. dbt is containerized within the Dagster user-code service and executed via the dbt CLI, allowing transformations to run alongside orchestration logic. To support dbt model-level lineage, the user-code container generates a fresh dbt manifest at startup (dbt deps + dbt parse) rather than baking build artifacts into the image, ensuring clean, reproducible deployments. This setup provides a scalable, production-ready orchestration layer without managing EC2 infrastructure.
@@ -68,6 +75,22 @@ This project is deployed on AWS using ECS with Fargate to run Dagster in a fully
 - **IAM** – task execution roles and permissions
 - **VPC + Security Groups** – network isolation and access control
 
+### Snowflake
+
+Snowflake is used as the central cloud data warehouse for this project, storing raw data ingested by Airbyte and supporting in-warehouse transformations with dbt to produce curated staging and mart schemas. These analytics-ready mart tables are then consumed directly by Tableau, which connects to Snowflake for semantic modeling and visualization. This design follows an ELT pattern and enables scalable transformations, governed data access, and efficient downstream analytics.
+
+![Snowflake_warehouse](images/snowflake_database_catalog.png)
+
+## Analytics
+
+### ERD
+
+The data model is designed using dimensional modeling principles, with a central fact table (fact_earthquake_event) capturing individual earthquake events and multiple supporting dimensions. The fact table records measurable attributes such as magnitude, depth, location coordinates, and timestamps, and links to dimensions for time and location analysis.
+
+Location data is modeled using a lightly snowflaked structure: earthquake events reference a GeoNames-based geocode dimension (dim_geocode), which is further normalized into a country dimension (dim_country). This design avoids redundancy in country attributes while still enabling geographic rollups by country, region, and continent. A date dimension (dim_date) supports flexible time-based analysis across days, months, and years.
+
+![Snowflake_schema_data_model](images/earthquake_api_ERD.jpg)
+
 
 ### Tableau
 
@@ -77,10 +100,3 @@ Tableau serves as the final BI and consumption layer of the pipeline, connecting
 
 The dashboard is published to Tableau Public and can be viewed here: https://public.tableau.com/views/earthquake_project_tableau/Dashboard1?:language=en-US&publish=yes&:sid=&:redirect=auth&:display_count=n&:origin=viz_share_link
 
-## ERD
-
-The data model is designed using dimensional modeling principles, with a central fact table (fact_earthquake_event) capturing individual earthquake events and multiple supporting dimensions. The fact table records measurable attributes such as magnitude, depth, location coordinates, and timestamps, and links to dimensions for time and location analysis.
-
-Location data is modeled using a lightly snowflaked structure: earthquake events reference a GeoNames-based geocode dimension (dim_geocode), which is further normalized into a country dimension (dim_country). This design avoids redundancy in country attributes while still enabling geographic rollups by country, region, and continent. A date dimension (dim_date) supports flexible time-based analysis across days, months, and years.
-
-![Snowflake_schema_data_model](images/earthquake_api_ERD.jpg)
