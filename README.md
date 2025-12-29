@@ -23,6 +23,9 @@ The GeoNames dataset only had country codes. The `all.csv` was sourced from this
 **Data Download:** https://github.com/lukes/ISO-3166-Countries-with-Regional-Codes/blob/master/all/all.csv
 
 ## Data Architecture
+At a high-level, this diagram showcases the end-to-end data architecture for this project, from source ingestion through transformation and analytics. 
+
+![Data Architecture](images/data_architecture.png)
 
 ## Tech Stack
 
